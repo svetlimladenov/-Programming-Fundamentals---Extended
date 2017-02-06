@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B486683F-9705-435F-B9D8-1EB398E7DA4C}</ProjectGuid>
+    <ProjectGuid>{073F2D79-543F-4896-ACC4-EE440630158E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>_04.Lab</RootNamespace>
-    <AssemblyName>04.Lab</AssemblyName>
+    <RootNamespace>_06.Math_Power</RootNamespace>
+    <AssemblyName>06.Math Power</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
