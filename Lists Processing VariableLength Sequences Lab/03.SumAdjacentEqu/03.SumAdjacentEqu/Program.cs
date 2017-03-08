@@ -14,18 +14,18 @@ namespace _03.SumAdjacentEqu
                 .Split(' ')
                 .Select(int.Parse)
                 .ToList();
-            for (int i = 0; i < numbers.Count - 1; i++)
+            foreach (var item in numbers)
             {
-                var currentNum = numbers[i];
-                var nextNum = numbers[i + 1];
-                if (currentNum == nextNum)
+                var currentNumber = numbers[i];
+                var nextNumber = numbers[i + 1];
+                if (currentNumber == nextNumber)
                 {
-                    numbers.RemoveAt(currentNum);
-                    numbers.RemoveAt(nextNum);
-                    numbers.Add(currentNum + nextNum);
+                    numbers.RemoveAt(i);
+                    numbers.RemoveAt(i + 1);
+                    numbers.Insert(i, currentNumber + nextNumber);
                 }
             }
-            var result = string.Join(" ", numbers);
+            string result = string.Join(" ", numbers);
             Console.WriteLine(result);
         }
     }
