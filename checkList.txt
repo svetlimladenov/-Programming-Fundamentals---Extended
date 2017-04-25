@@ -1,0 +1,25 @@
+Exam Preparation I
+	01. Sino The Walker - 100 points
+	02. SoftUni Karaoke - 100 points
+	03. Endurance Rally - 100 points
+	04. Winning Ticket - 
+Exam Preparation II
+	01. Charity Marathon - 100 points
+	02. Ladybugs - 100 points
+	03. Nether Realms - 100 points
+	04. Roli The Coder - 100 points
+Exam Preparation III
+	01. Softuni Coffee Orders - 100 points
+	02. Command Interpreter - 100 points
+	03. Rage Quit - 100 points 
+	04. Files - 
+Exam Preparation IV
+	01. Sweet Dessert - 100 points
+	02. Array Manipulator 70 points, 100 points
+	03. Football League - 100 points
+Exam Prepatration V
+	01. Hornet Wings - 100 points
+	02. Hornet Comm. - 100 points
+	03. Hornet Assault - 80 points
+	
+	

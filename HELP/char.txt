@@ -1,0 +1,11 @@
+char.IsDigit()
+char.IsLower()
+char.IsUpper()
+char.IsLetterOrDigit()
+char.IsLetter()
+char.IsWhiteSpace()
+
+EXAMPLE:
+if (firstQuery.All(char.IsDigit) &&
+                    secondQuery.All(char.IsLetterOrDigit))
+//Hornet Comm

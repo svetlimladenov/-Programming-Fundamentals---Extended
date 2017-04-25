@@ -6,60 +6,102 @@ using System.Threading.Tasks;
 
 namespace _04.Roli_The_Coder
 {
+    public class Event
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public List<string> Participants { get; set; }
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
-            var currenEventName = new List<string>();
-            var result = new SortedDictionary<int, SortedDictionary<string, SortedSet<string>>>();
-
+            var result = new List<Event>();
+            var eventById = new Dictionary<int, Event>();
 
             while (true)
             {
-                var input = Console.ReadLine();
-                if (input == "Time for Code")
+                var currentLine = Console.ReadLine();
+                if (currentLine == "Time for Code")
                 {
                     break;
                 }
-                var tokens = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                var id = int.Parse(tokens[0]);
-                var eventName = tokens[1];
-                var participantsOfEvent = tokens.Skip(2).ToArray();
-
-                if (!result.ContainsKey(id))
+                var lineParts = currentLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                //id
+                var id = 0;
+                if (!int.TryParse(lineParts[0], out id))
                 {
-                    result[id] = new SortedDictionary<string, SortedSet<string>>();
+                    continue;
+                }
+                //eventName
+                var eventName = "";
+                if (lineParts.Length > 1 && lineParts[1].StartsWith("#"))
+                {
+                    eventName = lineParts[1].Trim('#');
+                }
+                else
+                {
+                    continue;
                 }
 
-
-                if (!result[id].ContainsKey(eventName) && eventName[0] == '#')
-                {       
-                        result[id][eventName] = new SortedSet<string>();
-                                 
-                }
-
-                for (int i = 0; i < participantsOfEvent.Length; i++)
+                //participants
+                var participants = new List<string>();
+                if (lineParts.Length > 2)
                 {
-                    result[id][eventName].Add(participantsOfEvent[i]);
-
-                }
-
-
-            }  
-            foreach (var kvp in result)
-            {
-                Console.WriteLine(kvp.Key);
-                foreach (var kur in kvp.Value)
-                {
-                    Console.WriteLine( kur.Key + " - " + kur.Value.Count);
-                    foreach (var asdf in kur.Value)
+                    participants = lineParts.Skip(2).ToList();
+                    if (!participants.All(p => p.StartsWith("@")))
                     {
-                        Console.WriteLine(asdf);
+                        continue;
                     }
                 }
+
+
+                if (eventById.ContainsKey(id))
+                {
+                    if (eventById[id].Name == eventName)
+                    {
+                        var existingEvent = eventById[id];
+                        existingEvent.Participants.AddRange(participants);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                }
+                else
+                {
+                    var newEvent = new Event
+                    {
+                        Id = id,
+                        Name = eventName,
+                        Participants = participants
+                    };
+
+                    result.Add(newEvent);
+
+                    eventById.Add(id, newEvent);
+                }
+                participants.Sort();
+
+          
             }
 
+            var sortedEvents = result
+                    .OrderByDescending(e => e.Participants.Distinct().Count())
+                    .ThenBy(e => e.Name);
+            foreach (var ev in sortedEvents)
+                {
+                    var distinctParticipants = ev.Participants.Distinct().ToList();
+                    Console.WriteLine($"{ev.Name} - {distinctParticipants.Count}");
+                    foreach (var participant in distinctParticipants.OrderBy(p => p))
+                    {
+                        Console.WriteLine(participant);
+                    }
+                }
         }
     }
 }

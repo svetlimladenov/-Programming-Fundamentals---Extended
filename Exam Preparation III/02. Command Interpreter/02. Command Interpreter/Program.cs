@@ -11,81 +11,136 @@ namespace _02.Command_Interpreter
         public static void Main()
         {
             var collection = Console.ReadLine()
-                .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                .ToList();
+            var inputLine = Console.ReadLine();
 
-            while (true)
+            while (inputLine != "end")
             {
-                var command = Console.ReadLine()
-                    .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                if (command[0] == "end")
+                var inputParams = inputLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                string command = inputParams[0];
+                switch (command)
                 {
-                    break;
-                }
+                    case "reverse":
+                        var reverseStart = int.Parse(inputParams[2]);
+                        var reverseCount = int.Parse(inputParams[4]);
+                        if (IsValid(collection,reverseStart,reverseCount))
+                        {
+                            Reverse(collection, reverseStart, reverseCount);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input parameters.");
 
-                if (command[0] == "reverse")
-                {
-                    var reverseFrom = int.Parse(command[2]);
-                    var count = int.Parse(command[4]);
-                    var result = collection
-                        .Skip(reverseFrom)
-                        .Take(count)
-                        .Reverse()
-                        .ToArray();
-                    var firstPart = collection.Take(reverseFrom);
-                    var secondPart = collection.Reverse().Take(collection.Length - count - reverseFrom).Reverse();
-                    Console.WriteLine("["
-                        + string.Join(", ", firstPart)
-                        + ", "
-                        + string.Join(", ", result)
-                        + ", "
-                        + string.Join(", ", secondPart)
-                        + "]");
+                        }
+                        break;
 
-                }
-                else if (command[0] == "sort")
-                {
-                    var reverseFrom = int.Parse(command[2]);
-                    var count = int.Parse(command[4]);
-                    var result = collection
-                        .Skip(reverseFrom)
-                        .Take(count)
-                        .OrderBy(a => a)
-                        .ToArray();
-                    var firstPart = collection.Take(reverseFrom);
-                    var secondPart = collection.Reverse().Take(collection.Length - count - reverseFrom).Reverse();
-                    if (firstPart.Count() > 0)
-                    {
-                        Console.WriteLine("["
-                            + string.Join(", ", firstPart)
-                            + ", "
-                            + string.Join(", ", result)
-                            + ", "
-                            + string.Join(", ", secondPart)
-                            + "]");
-                    }
-                    else
-                    {
-                        Console.WriteLine("["
-                            + string.Join(", ", result)
-                            + ", "
-                            + string.Join(", ", secondPart)
-                            + "]");
-                    }
-                }
-                else if (command[0] == "rollLeft")
-                {
+                    case "sort":
+                        var sortStart = int.Parse(inputParams[2]);
+                        var sortCount = int.Parse(inputParams[4]);
+                        if (IsValid(collection,sortStart,sortCount))
+                        {
+                            Sort(collection, sortStart, sortCount);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input parameters.");
+                        }
+                        break;
+
+                    case "rollLeft":
+                        var rollLeftCount = int.Parse(inputParams[1]);
+                        if (rollLeftCount >= 0)
+                        {
+                            RollLeft(collection, rollLeftCount);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input parameters.");
+
+                        }
+                        break;
+
+                    case "rollRight":
+                        var rollRightCount = int.Parse(inputParams[1]);
+                        if (rollRightCount >= 0)
+                        {
+                            RollRight(collection, rollRightCount);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input parameters.");
+
+                        }
+                        break;
 
                 }
-                else if (command[0] == "rollRight")
-                {
-
-                }
-                else
-                {
-                    Console.WriteLine("Invalid input parameters.");
-                }
+                inputLine = Console.ReadLine();
             }
 
+            Console.WriteLine($"[{string.Join(", ", collection)}]");
         }
+
+        private static bool IsValid(List<string> collection, int start, int count)
+        {
+            bool result = start >= 0 &&
+                count >= 0 &&
+                start < collection.Count &&
+                (start + count) <= collection.Count;
+
+            return result;
+
+        }
+
+        private static void Reverse(List<string> collection, int reverseStart, int reverseCount)
+        {
+            collection.Reverse(reverseStart, reverseCount);
+            //var portion = new List<string>();
+
+            //for (int i = reverseStart; i < reverseCount; i++)
+            //{
+            //    portion.Add(collection[i]);
+
+            //}
+            //portion.Reverse();
+            //collection.RemoveRange(reverseCount, reverseCount);
+            //collection.InsertRange(reverseStart, portion);
+        }
+
+        private static void Sort(List<string> collection, int sortStart, int sortCount)
+        {
+            collection.Sort(sortStart, sortCount, null);
+        }
+
+        private static void RollLeft(List<string> collection, int rollLeftCount)
+        {
+            int rotations = rollLeftCount % collection.Count;
+            for (int i = 0; i < rotations; i++)
+            {
+                var firstElement = collection[0];
+
+                for (int r = 0; r < collection.Count - 1; r++)
+                {
+                    collection[r] = collection[r + 1];
+                }
+                collection[collection.Count - 1] = firstElement;
+            }
+        }
+
+        private static void RollRight(List<string> collection, int rollRightCount)
+        {
+            int rotations = rollRightCount % collection.Count;
+
+            for (int i = 0; i < rotations; i++)
+            {
+                var lastElement = collection[collection.Count - 1];
+                for (int r = collection.Count - 1; r > 0; r--)
+                {
+                    collection[r] = collection[r - 1];
+                }
+                collection[0] = lastElement;
+            }
+        }
+
     }
 }
