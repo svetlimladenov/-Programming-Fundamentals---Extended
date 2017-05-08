@@ -33,7 +33,7 @@ namespace Problem_2___Worm_Ipsum
                 }
 
                 var sentance = inputparams[0];
-                var wordInSentance = sentance.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var wordInSentance = sentance.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
                 var currentSentance = new StringBuilder();
                 foreach (var word in wordInSentance)
                 {
@@ -55,7 +55,7 @@ namespace Problem_2___Worm_Ipsum
                 Console.Write(currentSentance.ToString().TrimEnd());
                 Console.WriteLine(".");
             }
-                
+
 
         }
     }
