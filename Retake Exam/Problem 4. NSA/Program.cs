@@ -10,7 +10,7 @@ namespace Problem_4.NSA
     {
         public static void Main()
         {
-            var result = new Dictionary<string, Dictionary<string, int>>();
+            var result = new Dictionary<string, Dictionary<string, long>>();
 
             while (true)
             {
@@ -19,19 +19,23 @@ namespace Problem_4.NSA
                 {
                     break;
                 }
-
+                
                 var commandParams = command.Split(new[] {" -> "},StringSplitOptions.RemoveEmptyEntries);
+                
                 var countryName = commandParams[0];
                 var spyName = commandParams[1];
-                var daysInService = int.Parse(commandParams[2]);
-
+                var daysInService = long.Parse(commandParams[2]);
+                if (daysInService < 0)
+                {
+                    continue;
+                }
                 if (!result.ContainsKey(countryName))
                 {
-                    result[countryName] = new Dictionary<string, int>();
+                    result[countryName] = new Dictionary<string, long>();
                 }
                 if (!result[countryName].ContainsKey(spyName))
                 {
-                    result[countryName][spyName] = new Int32();
+                    result[countryName][spyName] = 0L;
                 }
 
                 result[countryName][spyName]+=daysInService;
@@ -40,16 +44,20 @@ namespace Problem_4.NSA
 
             //var result = new Dictionary<string, Dictionary<string, int>>();
 
-            
-            result = result.OrderByDescending(s => s.Value.Keys.Count)
-                .ToDictionary(s => s.Key, s => s.Value);
 
+            result = result
+                .OrderByDescending(a => a.Value.Count)
+                .ToDictionary(a => a.Key, a => a.Value);
             
             foreach (var country in result)
                 {
                     Console.WriteLine($"Country: {country.Key}");
-                    
-                    foreach (var soldier in country.Value)
+
+                var innerDic = country.Value
+                    .OrderByDescending(k => k.Value)
+                    .ToDictionary(k => k.Key, k => k.Value
+                    );
+                    foreach (var soldier in innerDic)
                     {
                         Console.WriteLine($"**{soldier.Key} : {soldier.Value}");
                     }
